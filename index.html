@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inscrição · Fight Like a Girl</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,600;1,9..144,700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sugar:#FFF1F6;      /* fundo algodão-doce */
+  --cream:#FFFFFF;
+  --blush:#FFD6E7;
+  --hot:#FF2D78;        /* rosa-choque: a voz do evento */
+  --lilac:#A96BFF;      /* contraponto */
+  --plum:#41102F;       /* texto — ameixa, nunca preto */
+  --muted:#A5748F;
+  --line:rgba(65,16,47,.12);
+  --display:'Fraunces',Georgia,serif;
+  --body:'DM Sans',system-ui,sans-serif;
+  --mono:'DM Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--sugar);
+  color:var(--plum);
+  font-family:var(--body);
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+/* poá miúdo + brilho quente nos cantos */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;
+  background:
+    radial-gradient(circle at 1px 1px,rgba(255,45,120,.13) 1px,transparent 0) 0 0/22px 22px,
+    radial-gradient(80% 60% at 100% 0%,rgba(169,107,255,.16),transparent 65%),
+    radial-gradient(70% 55% at 0% 100%,rgba(255,45,120,.14),transparent 60%);
+}
+/* faíscas ambiente */
+.spark{position:fixed;color:var(--hot);opacity:.5;pointer-events:none;z-index:1;font-size:13px;
+  animation:float 9s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0);opacity:.25}50%{transform:translateY(-16px) rotate(18deg);opacity:.6}}
+
+.stage{position:relative;height:100dvh;display:flex;flex-direction:column}
+header.bar{
+  display:flex;align-items:center;gap:16px;
+  padding:18px 24px;border-bottom:1px solid var(--line);
+  position:relative;z-index:3;background:rgba(255,255,255,.55);backdrop-filter:blur(6px);
+}
+.mark{font-family:var(--display);font-style:italic;font-weight:700;font-size:19px;letter-spacing:-.01em}
+.mark span{color:var(--hot)}
+.tallies{display:flex;gap:6px;margin-left:auto;align-items:center;height:22px}
+.tally{font-size:14px;line-height:1;color:var(--blush);transition:color .3s,transform .3s cubic-bezier(.2,1.6,.4,1)}
+.tally.done{color:var(--hot);transform:scale(1.15)}
+.tally.now{color:var(--lilac);transform:scale(1.35);animation:beat 1.5s infinite}
+@keyframes beat{0%,100%{transform:scale(1.35)}50%{transform:scale(1.05)}}
+.count{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em}
+
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:24px;position:relative;z-index:2}
+.card{width:100%;max-width:620px}
+
+.card.in{animation:enter .55s cubic-bezier(.16,1,.3,1) both}
+.card.out{animation:exit .28s cubic-bezier(.6,0,.9,.4) both}
+@keyframes enter{from{opacity:0;transform:translateY(24px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes exit{to{opacity:0;transform:translateY(-18px) scale(.99)}}
+.card > *{animation:rise .55s cubic-bezier(.16,1,.3,1) both}
+.card > *:nth-child(1){animation-delay:.04s}
+.card > *:nth-child(2){animation-delay:.10s}
+.card > *:nth-child(3){animation-delay:.16s}
+.card > *:nth-child(4){animation-delay:.22s}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* assinatura: uma fita de cetim com borda ondulada varre a tela a cada resposta */
+.slash{position:fixed;top:-10%;bottom:-10%;left:0;width:70%;z-index:5;pointer-events:none;
+  background:linear-gradient(100deg,var(--hot),var(--lilac));
+  border-radius:0 50% 50% 0/0 40% 40% 0;
+  transform:translateX(-150%);}
+.slash.hit{animation:ribbon .6s cubic-bezier(.65,0,.35,1)}
+@keyframes ribbon{0%{transform:translateX(-150%)}100%{transform:translateX(180%)}}
+
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--hot);margin-bottom:14px;display:flex;gap:10px;align-items:center}
+.eyebrow::after{content:'';flex:1;height:1px;background:var(--line)}
+h1{font-family:var(--display);font-style:italic;font-weight:700;font-size:clamp(40px,7.4vw,68px);line-height:1;letter-spacing:-.02em}
+h1 em{font-style:italic;color:var(--hot)}
+.q{font-family:var(--display);font-style:italic;font-weight:600;font-size:clamp(27px,4.8vw,42px);line-height:1.08;letter-spacing:-.015em}
+.hint{color:var(--muted);font-size:15px;line-height:1.55;margin-top:10px}
+
+input[type=text],input[type=tel],input[type=number],textarea{
+  width:100%;background:var(--cream);border:1.5px solid var(--blush);
+  color:var(--plum);font-family:var(--body);font-size:clamp(19px,3.2vw,25px);
+  padding:16px 18px;margin-top:26px;outline:none;border-radius:16px;
+  transition:border-color .25s,box-shadow .25s;
+}
+textarea{resize:none;min-height:110px;font-size:18px;line-height:1.55}
+input:focus,textarea:focus{border-color:var(--hot);box-shadow:0 0 0 4px rgba(255,45,120,.14)}
+input::placeholder,textarea::placeholder{color:#D9A9C0}
+
+.opts{display:grid;gap:10px;margin-top:26px}
+.opt{
+  display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;
+  background:var(--cream);border:1.5px solid var(--blush);
+  color:var(--plum);font-family:var(--body);font-size:17px;padding:16px 18px;border-radius:18px;
+  transition:transform .18s cubic-bezier(.2,1.4,.4,1),border-color .2s,box-shadow .2s;
+}
+.opt:hover{transform:translateX(6px);border-color:var(--hot);box-shadow:0 6px 16px rgba(255,45,120,.16)}
+.opt:active{transform:translateX(3px) scale(.99)}
+.opt.on{border-color:var(--hot);background:#FFF4F8;box-shadow:0 6px 16px rgba(255,45,120,.18)}
+.key{font-family:var(--mono);font-size:11px;background:var(--blush);padding:4px 8px;border-radius:8px;color:var(--plum);flex-shrink:0}
+.opt.on .key{background:var(--hot);color:#fff}
+.opt.on .tick{opacity:1;transform:scale(1) rotate(0)}
+.tick{margin-left:auto;color:var(--hot);opacity:0;transform:scale(.4) rotate(-25deg);transition:.25s cubic-bezier(.2,1.6,.4,1);font-size:17px}
+
+.row{display:flex;align-items:center;gap:18px;margin-top:32px;flex-wrap:wrap}
+button.go{
+  font-family:var(--body);font-weight:700;font-size:16px;letter-spacing:.01em;
+  background:linear-gradient(100deg,var(--hot),#FF5FA0);color:#fff;border:none;
+  padding:16px 32px;border-radius:999px;cursor:pointer;
+  box-shadow:0 8px 20px rgba(255,45,120,.32);
+  transition:transform .18s cubic-bezier(.2,1.4,.4,1),box-shadow .18s;
+}
+button.go:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(255,45,120,.42)}
+button.go:active{transform:translateY(0)}
+button.go:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+button.ghost{background:none;border:none;color:var(--muted);font-family:var(--mono);font-size:12px;cursor:pointer;letter-spacing:.06em}
+button.ghost:hover{color:var(--hot)}
+.enter{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.05em}
+.err{color:var(--hot);font-family:var(--mono);font-size:12px;margin-top:12px;min-height:16px}
+
+.done .big{font-family:var(--display);font-style:italic;font-weight:700;font-size:clamp(44px,8.6vw,84px);line-height:.98;letter-spacing:-.025em}
+.done .big em{font-style:italic;color:var(--lilac)}
+.info{border-left:4px solid var(--lilac);padding:16px 20px;background:var(--cream);border-radius:0 18px 18px 0;margin-top:26px;font-size:15px;line-height:1.6;box-shadow:0 8px 22px rgba(169,107,255,.14)}
+.info b{color:var(--lilac);font-weight:700}
+.info.alt{border-left-color:var(--hot);box-shadow:0 8px 22px rgba(255,45,120,.14)}
+.info.alt b{color:var(--hot)}
+
+.saving{position:fixed;bottom:16px;left:24px;font-family:var(--mono);font-size:11px;color:var(--muted);opacity:0;transition:opacity .3s;z-index:4}
+.saving.on{opacity:1}
+
+@media (max-width:560px){header.bar{padding:14px 18px}main{padding:18px}}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<div class="slash" id="slash"></div>
+<span class="spark" style="top:14%;left:8%">✦</span>
+<span class="spark" style="top:72%;left:12%;animation-delay:2s">✿</span>
+<span class="spark" style="top:26%;right:9%;animation-delay:4s;color:var(--lilac)">✦</span>
+<span class="spark" style="top:66%;right:14%;animation-delay:6s">♥</span>
+
+<div class="stage">
+  <header class="bar">
+    <div class="mark">Fight Like a <span>Girl</span></div>
+    <div class="tallies" id="tallies"></div>
+    <div class="count" id="count"></div>
+  </header>
+  <main><div class="card in" id="card"></div></main>
+</div>
+
+<div class="saving" id="saving">rascunho salvo</div>
+
+<!-- ============================================================
+     FORMULÁRIO OCULTO — é ISTO que o Netlify lê no deploy.
+     Cada name= aqui precisa bater com um id= do array QUESTIONS.
+     Sem este bloco no HTML estático, o envio volta 404.
+     ============================================================ -->
+<form name="inscricao" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="inscricao">
+  <input name="bot-field">
+  <input name="nome_completo"><input name="nome"><input name="email"><input name="cpf">
+  <input name="zap"><input name="idade">
+  <input name="vinculo"><input name="periodo"><input name="exp"><input name="canal">
+  <input name="doacao"><textarea name="saude"></textarea><input name="imagem">
+</form>
+
+<script>
+/* ============================================================
+   1. AS PERGUNTAS — troque este array e o formulário inteiro muda
+   ============================================================ */
+const QUESTIONS = [
+  {id:'nome_completo', type:'text', q:'Seu nome completo',
+   hint:'Como está no documento — é o que vai na lista de presença e no certificado.', required:true},
+  {id:'nome',  type:'text',   q:'E como você quer ser chamada?',
+   hint:'Nome ou apelido — é assim que a gente vai te receber no tatame.', required:true},
+  {id:'email', type:'email',  q:'Seu e-mail',
+   ph:'voce@email.com',
+   hint:'É por ele que enviamos a confirmação da vaga e o certificado depois do evento.', required:true},
+  {id:'cpf',   type:'text', mask:'cpf', q:'Seu CPF',
+   ph:'000.000.000-00',
+   hint:'Usamos apenas para a lista de presença e para emitir o certificado. Não compartilhamos com terceiros.', required:true},
+  {id:'zap',   type:'tel',    q:'Seu WhatsApp',
+   hint:'Com DDD. É por ele que vamos te adicionar ao grupo das participantes.', required:true},
+  {id:'idade', type:'number', q:'Sua idade', hint:'O evento é para maiores de 18 anos.', required:true},
+  {id:'vinculo', type:'single', q:'De onde você vem?',
+   options:['Estudante da UFJF-GV','Outra faculdade','Comunidade de Governador Valadares'], required:true},
+  {id:'periodo', type:'single', q:'Em que período da medicina você está?',
+   hint:'Se você não cursa medicina, marque a última opção.',
+   options:['1º ao 4º período','5º ao 8º período','9º ao 12º período','Não curso medicina'],
+   required:true},
+  {id:'exp',   type:'single', q:'Já treinou alguma arte marcial?',
+   hint:'Não muda nada na inscrição — só ajuda a instrutora a calibrar a turma.',
+   options:['Nunca','Já experimentei','Treino ou já treinei sério'], required:true},
+  {id:'canal', type:'multi',  q:'Como você soube do evento?',
+   hint:'Pode marcar mais de uma.',
+   options:['Instagram','Uma amiga','Cartaz na faculdade','Grupo de WhatsApp'], required:false},
+  {id:'doacao',type:'single', q:'Você sabia que a entrada é com 2 pacotes de absorventes?',
+   hint:'Cada participante leva 2 pacotes no dia do evento, entregues na chegada. Se quiser levar mais, a gente agradece — tudo vai para a campanha de doação.',
+   options:['Sim, vou levar os 2 pacotes','Sim, e quero levar mais que 2 para doar','Não sabia, mas vou levar'], required:true},
+  {id:'saude', type:'textarea', q:'Alguma lesão ou limitação física?',
+   hint:'Opcional. Escreva se houver algo que a instrutora precise adaptar.', required:false},
+  {id:'imagem', type:'single', q:'Autorização de uso de imagem',
+   hint:'Vamos registrar o evento em fotos e vídeos. Ao autorizar, você permite que o IFMSA Brasil UFJF-GV use esse material para divulgação sem fins lucrativos, nas redes da entidade e em relatórios do projeto, por prazo indeterminado. Você participa normalmente mesmo se não autorizar — é só avisar a equipe na chegada.',
+   options:['Autorizo o uso da minha imagem','Não autorizo'], required:true}
+];
+const FORM_NAME = 'inscricao';
+
+/* ---- CHAVE DAS INSCRIÇÕES ----------------------------------
+   ABERTO=false fecha na hora (precisa de novo deploy).
+   FECHA_EM fecha sozinho na data marcada, sem você tocar em nada.
+   ------------------------------------------------------------ */
+const ABERTO   = true;
+const FECHA_EM = '2026-08-05T23:59:59';
+const aberto = () => ABERTO && Date.now() < new Date(FECHA_EM).getTime();   // precisa ser igual ao name= do formulário oculto acima
+
+/* ============================================================
+   2. ARMAZENAMENTO — só o rascunho, no navegador da própria pessoa.
+   As inscrições enviadas ficam no painel do Netlify, não aqui.
+   ============================================================ */
+const store = {
+  get(k){ try{ return localStorage.getItem(k); }catch{ return null; } },
+  set(k, v){ try{ localStorage.setItem(k, v); }catch{} },
+  del(k){ try{ localStorage.removeItem(k); }catch{} }
+};
+
+/* ============================================================
+   3. ESTADO E NAVEGAÇÃO
+   ============================================================ */
+let step = -1;                 // -1 = capa, QUESTIONS.length = tela final
+let answers = {};
+const card = document.getElementById('card');
+const slash = document.getElementById('slash');
+
+function tallyBar(){
+  const box = document.getElementById('tallies');
+  box.innerHTML = QUESTIONS.map((_,i)=>{
+    const c = i < step ? 'done' : i === step ? 'now' : '';
+    return `<span class="tally ${c}">♥</span>`;
+  }).join('');
+  document.getElementById('count').textContent =
+    step < 0 ? '' : step >= QUESTIONS.length ? 'fim' : String(step+1).padStart(2,'0')+' / '+String(QUESTIONS.length).padStart(2,'0');
+}
+
+function transition(render){
+  card.classList.remove('in');
+  card.classList.add('out');
+  slash.classList.remove('hit'); void slash.offsetWidth; slash.classList.add('hit');
+  setTimeout(()=>{
+    render();
+    card.classList.remove('out');
+    void card.offsetWidth;
+    card.classList.add('in');
+    tallyBar();
+    const f = card.querySelector('input,textarea');
+    if(f) f.focus();
+  }, 240);
+}
+const go = n => { step = n; transition(draw); saveDraft(); };
+
+/* ============================================================
+   4. RENDERIZAÇÃO
+   ============================================================ */
+function draw(){
+  if(!aberto() && step < QUESTIONS.length) return drawClosed();
+  if(step < 0) return drawCover();
+  if(step >= QUESTIONS.length) return drawDone();
+  const Q = QUESTIONS[step];
+  const val = answers[Q.id];
+  let field = '';
+
+  if(['text','tel','number','email','textarea'].includes(Q.type)){
+    const v = val ? String(val).replace(/"/g,'&quot;') : '';
+    const ph = Q.ph || (Q.type==='tel' ? '(33) 90000-0000' : 'Digite aqui...');
+    const extra = Q.mask==='cpf' ? ' inputmode="numeric" maxlength="14"' : '';
+    field = Q.type === 'textarea'
+      ? `<textarea id="f" placeholder="Escreva aqui...">${v}</textarea>`
+      : `<input id="f" type="${Q.type}" value="${v}" placeholder="${ph}"${extra}>`;
+  } else {
+    const sel = Q.type === 'multi' ? (val || []) : [val];
+    field = `<div class="opts">` + Q.options.map((o,i)=>`
+      <button class="opt ${sel.includes(o)?'on':''}" data-o="${o}">
+        <span class="key">${String.fromCharCode(65+i)}</span><span>${o}</span><span class="tick">♥</span>
+      </button>`).join('') + `</div>`;
+  }
+
+  card.innerHTML = `
+    <div class="eyebrow">Pergunta ${String(step+1).padStart(2,'0')}${Q.required?'':' · opcional'}</div>
+    <div><div class="q">${Q.q}</div>${Q.hint?`<div class="hint">${Q.hint}</div>`:''}</div>
+    ${field}
+    <div>
+      <div class="err" id="err"></div>
+      <div class="row">
+        <button class="go" id="next">${step===QUESTIONS.length-1?'Enviar inscrição':'Continuar'}</button>
+        <span class="enter">${Q.type==='textarea'?'shift + enter para nova linha':'enter ↵'}</span>
+        ${step>0?'<button class="ghost" id="back">← voltar</button>':''}
+      </div>
+    </div>`;
+
+  card.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    const o = b.dataset.o;
+    if(Q.type === 'multi'){
+      const cur = answers[Q.id] || [];
+      answers[Q.id] = cur.includes(o) ? cur.filter(x=>x!==o) : [...cur,o];
+      b.classList.toggle('on'); saveDraft();
+    } else {
+      answers[Q.id] = o; saveDraft(); advance();
+    }
+  });
+  const nx = document.getElementById('next'); if(nx) nx.onclick = advance;
+  const bk = document.getElementById('back'); if(bk) bk.onclick = ()=>go(step-1);
+  const f  = document.getElementById('f');
+  if(f) f.oninput = ()=>{
+    if(Q.mask === 'cpf'){
+      const d = f.value.replace(/\D/g,'').slice(0,11);
+      f.value = d.length>9 ? `${d.slice(0,3)}.${d.slice(3,6)}.${d.slice(6,9)}-${d.slice(9)}`
+              : d.length>6 ? `${d.slice(0,3)}.${d.slice(3,6)}.${d.slice(6)}`
+              : d.length>3 ? `${d.slice(0,3)}.${d.slice(3)}` : d;
+    }
+    answers[Q.id] = f.value; saveDraft();
+  };
+}
+
+function drawCover(){
+  card.innerHTML = `
+    <div class="eyebrow">08 de agosto · Instituto Kiron · Gov. Valadares</div>
+    <h1>Fight<br>like a <em>girl</em></h1>
+    <div class="hint">Roda de conversa e oficina de defesa pessoal, para maiores de 18 anos.
+    <b>São 20 vagas, preenchidas por ordem de inscrição</b> — quanto antes você enviar, melhor.
+    A entrada é com a doação de 2 pacotes de absorventes.
+    São ${QUESTIONS.length} perguntas, leva menos de dois minutos.</div>
+    <div class="row"><button class="go" id="start">Começar inscrição</button>
+    <span class="enter">enter ↵</span></div>`;
+  document.getElementById('start').onclick = ()=>go(0);
+}
+
+function drawClosed(){
+  card.className = 'card in done';
+  card.innerHTML = `
+    <div class="eyebrow">Inscrições encerradas</div>
+    <div class="big">As vagas<br>já <em>fecharam</em></div>
+    <div class="info alt">As 20 vagas foram preenchidas por ordem de inscrição e o formulário está fechado.
+    Acompanhe o <b>@ifmsabrazil.ufjfgv</b> no Instagram: avisamos por lá quando abrir a próxima turma.</div>`;
+}
+
+function drawDone(){
+  card.className = 'card in done';
+  card.innerHTML = `
+    <div class="eyebrow">Inscrição recebida</div>
+    <div class="big">Agora é<br><em>aguardar</em></div>
+    <div class="info">Sua inscrição entrou na fila. <b>São 20 vagas, preenchidas por ordem de inscrição</b>,
+    então ainda não é uma vaga garantida — a gente confere a lista e te responde no WhatsApp,
+    seja para confirmar ou para avisar que você ficou na lista de espera.</div>
+    <div class="info alt">Se você for chamada: <b>08/08, 14h, Instituto Kiron</b>, com roupa confortável,
+    garrafa d'água e os <b>2 pacotes de absorventes</b>. Criamos um <b>grupo no WhatsApp</b> com as
+    participantes confirmadas mais perto da data, usando o número que você acabou de deixar.</div>
+    <div class="row"><button class="ghost" id="again">enviar outra inscrição</button></div>`;
+  document.getElementById('again').onclick = ()=>{ answers={}; card.className='card in'; go(-1); };
+}
+
+/* ============================================================
+   5. VALIDAÇÃO E ENVIO
+   ============================================================ */
+function advance(){
+  const Q = QUESTIONS[step];
+  const v = answers[Q.id];
+  const empty = v===undefined || v==='' || (Array.isArray(v) && !v.length);
+  if(Q.required && empty){
+    const e = document.getElementById('err');
+    e.textContent = 'Esta resposta é necessária para seguir.';
+    card.animate([{transform:'translateX(0)'},{transform:'translateX(-9px)'},
+                  {transform:'translateX(7px)'},{transform:'translateX(0)'}],{duration:280});
+    return;
+  }
+  if(Q.type==='email' && v && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){
+    document.getElementById('err').textContent = 'Confira o e-mail — parece estar incompleto.'; return;
+  }
+  if(Q.mask==='cpf' && v && !cpfValido(v)){
+    document.getElementById('err').textContent = 'Esse CPF não confere. Verifique os números.'; return;
+  }
+  if(Q.id==='idade' && v && Number(v) < 18){
+    document.getElementById('err').textContent = 'O evento é exclusivo para maiores de 18 anos.'; return;
+  }
+  if(step === QUESTIONS.length-1) submit(); else go(step+1);
+}
+
+/* validação real de CPF: 11 dígitos + os dois dígitos verificadores */
+function cpfValido(str){
+  const c = String(str).replace(/\D/g,'');
+  if(c.length !== 11 || /^(\d)\1{10}$/.test(c)) return false;
+  for(let t = 9; t < 11; t++){
+    let soma = 0;
+    for(let i = 0; i < t; i++) soma += Number(c[i]) * ((t + 1) - i);
+    let d = (soma * 10) % 11;
+    if(d === 10) d = 0;
+    if(d !== Number(c[t])) return false;
+  }
+  return true;
+}
+
+async function submit(){
+  const btn = document.getElementById('next');
+  const err = document.getElementById('err');
+  btn.disabled = true; btn.textContent = 'Enviando...'; err.textContent = '';
+
+  const body = new URLSearchParams({ 'form-name': FORM_NAME, 'bot-field': '' });
+  QUESTIONS.forEach(q => {
+    const v = answers[q.id];
+    body.append(q.id, Array.isArray(v) ? v.join(', ') : (v ?? ''));
+  });
+
+  try {
+    const r = await fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: body.toString()
+    });
+    if (!r.ok) throw new Error(r.status);   // aqui você SABE se deu certo
+    store.del('rascunho');
+    go(QUESTIONS.length);
+  } catch (e) {
+    btn.disabled = false; btn.textContent = 'Enviar inscrição';
+    err.textContent = 'Não deu para enviar. Confira a conexão e toque em enviar de novo — suas respostas continuam aqui.';
+  }
+}
+
+/* rascunho automático — se fechar a página, volta de onde parou */
+let t;
+function saveDraft(){
+  clearTimeout(t);
+  t = setTimeout(()=>{
+    if(step<0 || step>=QUESTIONS.length) return;
+    store.set('rascunho', JSON.stringify({step, answers}));
+    const s = document.getElementById('saving');
+    s.classList.add('on'); setTimeout(()=>s.classList.remove('on'),1200);
+  }, 600);
+}
+
+/* ============================================================
+   6. TECLADO
+   ============================================================ */
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Enter'){
+    if(e.target.tagName === 'TEXTAREA' && e.shiftKey) return;
+    e.preventDefault();
+    step < 0 ? go(0) : step < QUESTIONS.length ? advance() : null;
+    return;
+  }
+  if(step>=0 && step<QUESTIONS.length){
+    const Q = QUESTIONS[step];
+    if(['single','multi'].includes(Q.type)){
+      const i = e.key.toUpperCase().charCodeAt(0) - 65;
+      const b = card.querySelectorAll('.opt')[i];
+      if(i>=0 && i<Q.options.length && b) b.click();
+    }
+  }
+});
+
+/* ============================================================
+   7. INÍCIO — retoma rascunho se existir
+   ============================================================ */
+(function(){
+  const d = store.get('rascunho');
+  if(d){ try{ const p = JSON.parse(d); if(p && p.answers){ answers = p.answers; step = p.step; } }catch(e){} }
+  draw(); tallyBar();
+})();
+</script>
+</body>
+</html>
