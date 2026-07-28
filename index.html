@@ -252,7 +252,7 @@ const FORM_NAME = 'inscricao';
    ABERTO=false fecha na hora (precisa de novo deploy).
    FECHA_EM fecha sozinho na data marcada, sem você tocar em nada.
    ------------------------------------------------------------ */
-const ABERTO   = true;
+const ABERTO   = false;
 const FECHA_EM = '2026-08-05T23:59:59';
 const aberto = () => ABERTO && Date.now() < new Date(FECHA_EM).getTime();   // precisa ser igual ao name= do formulário oculto acima
  
